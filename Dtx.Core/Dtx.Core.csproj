@@ -4,10 +4,22 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Dtx.Core</PackageId>
+    <PackageVersion>1.0.1.0</PackageVersion>
+    <Title>Delimited text file (CSV) core framework</Title>
+    <Authors>Chris Targett-Adams</Authors>
+    <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/targettadams/Dtx</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>Delimited text file (CSV) core framework</PackageReleaseNotes>
+    <Description>Package for creating an IEnumerable of user defined objects from an input delimited text file (CSV)</Description>
+    <Copyright>Copyright %A9 Chris Targett-Adams</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
   </ItemGroup>
-
+ 
 </Project>

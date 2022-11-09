@@ -47,6 +47,8 @@ public class DtxEnumerator<T> : IEnumerator<T> where T : class, IDtxRow<T>, new(
 
     private string[]? _dtxHeaders;
 
+    private List<int> _dtxHeaderIndices = new List<int>();
+
     private readonly IDictionary<string, string> _keyValuePairs = new Dictionary<string, string>();
 
     T? _dtxRow = null;
@@ -106,16 +108,22 @@ public class DtxEnumerator<T> : IEnumerator<T> where T : class, IDtxRow<T>, new(
 
                     IDictionary<string, string> attributePropertyMap = DtxUtils.DtxAttributePropertyMap<T>();
 
+                    _dtxHeaderIndices.Clear();
+
                     for (int i = 0; i < _dtxHeaders.Length; i++)
                     {
-                        _dtxHeaders[i] = attributePropertyMap[_dtxHeaders[i]];
+                        if (attributePropertyMap.ContainsKey(_dtxHeaders[i]))
+                        {
+                            _dtxHeaders[i] = attributePropertyMap[_dtxHeaders[i]];
+                            _dtxHeaderIndices.Add(i);
+                        }
                     }
                 }
             }
 
-            if (_dtxHeaders is null)
+            if ( (_dtxHeaders is null) || (_dtxHeaderIndices.Count == 0) )
             {
-                throw new InvalidOperationException("No header line defined.");
+                throw new InvalidOperationException("No valid header line defined.");
             }
 
             string? nextLine = _reader.ReadLine();
@@ -132,9 +140,9 @@ public class DtxEnumerator<T> : IEnumerator<T> where T : class, IDtxRow<T>, new(
                     throw new ArgumentException($"Keys/values nust be non-null and contain the same number of elements.");
                 }
 
-                for (int i = 0; i < _dtxHeaders.Length; i++)
+                for (int i = 0; i < _dtxHeaderIndices.Count; i++)
                 {
-                    _keyValuePairs[_dtxHeaders[i]] = columns[i];
+                    _keyValuePairs[_dtxHeaders[_dtxHeaderIndices[i]]] = columns[_dtxHeaderIndices[i]];
                 }
 
                 _dtxRow = (T)DEFAULT_OBJECT.Build(_keyValuePairs);

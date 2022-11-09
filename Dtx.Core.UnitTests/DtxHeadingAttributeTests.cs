@@ -8,7 +8,7 @@ public class DtxHeadingAttributeTests
     /// Check that DtxUtils.DtxAttributePropertyMap only returns entries for decorated properties.   
     /// </summary>
     [Fact]
-    public void AttributePropertyMapTest_Alpha()
+    public void AttributePropertyMap_WithNoMissingAttributes_ExpectedCountReturned()
     {
         // ------- Act.
         var attributePropertyMap = DtxUtils.DtxAttributePropertyMap<PrimeMinister>();
@@ -21,12 +21,12 @@ public class DtxHeadingAttributeTests
     /// Check that DtxUtils.DtxAttributePropertyMap only returns entries for decorated properties.   
     /// </summary>
     [Fact]
-    public void AttributePropertyMapTest_Beta()
+    public void AttributePropertyMap_WithMissingAttribute_ExpectedCountReturned()
     {
         // ------- Act.
         var attributePropertyMap = DtxUtils.DtxAttributePropertyMap<PrimeMinisterMissingAttribute>();
 
         // ------- Assert.
-        Assert.False(attributePropertyMap.Count == 3);
+        Assert.True(attributePropertyMap.Count == 2);
     }
 }

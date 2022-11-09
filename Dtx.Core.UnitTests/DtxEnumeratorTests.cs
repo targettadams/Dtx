@@ -6,6 +6,34 @@ namespace Dtx.Core.UnitTests;
 public class DtxEnumeratorTests
 {
     [Fact]
+    public void MoveNext_WithRedundantColumn_FirstRowReturned()
+    {
+        // ------- Arrange.
+        Mock<IDtxStreamReader> reader = new();
+        reader.SetupSequence(i => i.ReadLine())
+            .Returns("First Name,Middle name,LastName,Age")
+            .Returns("John,,Major,79")
+            .Returns("Tony,,Blair,69")
+            .Returns("Liz,,Truss,47");
+
+        DtxEnumerable<PrimeMinister> enumerable = new(reader.Object, new DtxConfiguration(string.Empty));
+
+        IEnumerator<PrimeMinister> enumerator = enumerable.GetEnumerator();
+
+        // ------- Act.
+        enumerator.MoveNext();
+
+        // ------- Assert.
+        string? firstName = enumerator.Current.FirstName;
+        string? lastName = enumerator.Current.LastName;
+        int age = enumerator.Current.Age;
+
+        Assert.True(firstName == "John");
+        Assert.True(lastName == "Major");
+        Assert.True(age == 79);
+    }
+
+    [Fact]
     public void MoveNext_ThreeTimesWithPercentDelimiter_FirstRowReturned()
     {
         // ------- Arrange.
