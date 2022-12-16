@@ -123,7 +123,7 @@ public class DtxEnumerator<T> : IEnumerator<T> where T : class, IDtxRow<T>, new(
 
             if ( (_dtxHeaders is null) || (_dtxHeaderIndices.Count == 0) )
             {
-                throw new InvalidOperationException("No valid header line defined.");
+                throw new InvalidOperationException("No valid header line defined. Please check all properties in matching class are public and that at least one is decorated with the DtxHeading attribute.");
             }
 
             string? nextLine = _reader.ReadLine();
